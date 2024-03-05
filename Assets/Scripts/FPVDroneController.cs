@@ -13,6 +13,8 @@ public class FPVDroneController : MonoBehaviour
     public float stabilizationSpeed = 5f; // Adjust the speed of horizontal stabilization
 
     private Rigidbody rb;
+    private float targetAltitude = 0f; // Target altitude for hovering
+    public float defaultHoverHeight = 5f; // Adjust the desired hover height
 
     void Start()
     {
@@ -51,8 +53,12 @@ public class FPVDroneController : MonoBehaviour
 
         // Altitude Control
         float altitudeInput = Input.GetAxis("Jump") - Input.GetAxis("Fire1");
-        Vector3 verticalVelocity = Vector3.up * (altitudeInput * ascendSpeed + Mathf.Clamp(rb.velocity.y, -descendSpeed, 0));
-        rb.velocity = new Vector3(rb.velocity.x, verticalVelocity.y, rb.velocity.z);
+        targetAltitude += altitudeInput * ascendSpeed * Time.deltaTime;
+        targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue); // Ensure target altitude is not negative
+
+        float altitudeError = targetAltitude - transform.position.y;
+        float verticalVelocity = altitudeError * ascendSpeed + Mathf.Clamp(rb.velocity.y, -descendSpeed, 0);
+        rb.velocity = new Vector3(rb.velocity.x, verticalVelocity, rb.velocity.z);
 
         // Rotate Left and Right
         if (Input.GetKey(KeyCode.K))
