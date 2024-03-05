@@ -1,44 +1,67 @@
 using UnityEngine;
 
-public class FPVDroneController : MonoBehaviour
+public class DroneController : MonoBehaviour
 {
-    public float moveSpeed = 10f;
-    public float rotationSpeed = 100f;
-    public float leanIntensity = 20f;
-    public float pitchIntensity = 10f;
-    public float ascendSpeed = 5f;
-    public float descendSpeed = 3f;
-    public float drag = 5f; // Adjust linear drag
-    public float angularDrag = 5f; // Adjust angular drag
-    public float stabilizationSpeed = 5f; // Adjust the speed of horizontal stabilization
+    [Header("Movement Settings")]
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private float rotationSpeed = 100f;
+    [SerializeField] private float ascendSpeed = 5f;
+    [SerializeField] private float descendSpeed = 3f;
+
+    [Header("Control Intensity")]
+    [SerializeField] private float leanIntensity = 20f;
+    [SerializeField] private float pitchIntensity = 10f;
+    [SerializeField] private float stabilizationSpeed = 5f;
+
+    [Header("Altitude Settings")]
+    [SerializeField] private float hoverHeight = 5f;
 
     private Rigidbody rb;
-    private float targetAltitude = 0f; // Target altitude for hovering
-    public float defaultHoverHeight = 5f; // Adjust the desired hover height
+    private float targetAltitude = 0f;
 
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // Prevent rigidbody from rotating due to physics forces
-        rb.drag = drag;
-        rb.angularDrag = angularDrag;
+        InitializeRigidbody();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        // Basic Movement
+        BasicMovement();
+        Rotate();
+        Lean();
+        AltitudeControl();
+        RotateLeftRight();
+    }
+
+    private void InitializeRigidbody()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+    }
+
+    private void BasicMovement()
+    {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = new Vector3(horizontal, 0, vertical).normalized;
         Vector3 velocity = moveDirection * moveSpeed;
         rb.AddRelativeForce(velocity);
+    }
 
-        // Rotation
+    private void Rotate()
+    {
         float yaw = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
         transform.Rotate(0, yaw, 0);
+    }
 
-        // Lean in the direction of movement
+    private void Lean()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        Vector3 moveDirection = new Vector3(horizontal, 0, vertical).normalized;
+
         if (moveDirection.magnitude > 0)
         {
             Quaternion leanRotation = Quaternion.Euler(vertical * pitchIntensity, 0, -horizontal * leanIntensity);
@@ -46,21 +69,24 @@ public class FPVDroneController : MonoBehaviour
         }
         else
         {
-            // Horizontal Stabilization
             Quaternion levelRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
             transform.rotation = Quaternion.Slerp(transform.rotation, levelRotation, Time.deltaTime * stabilizationSpeed);
         }
+    }
 
-        // Altitude Control
+    private void AltitudeControl()
+    {
         float altitudeInput = Input.GetAxis("Jump") - Input.GetAxis("Fire1");
         targetAltitude += altitudeInput * ascendSpeed * Time.deltaTime;
-        targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue); // Ensure target altitude is not negative
+        targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue);
 
         float altitudeError = targetAltitude - transform.position.y;
         float verticalVelocity = altitudeError * ascendSpeed + Mathf.Clamp(rb.velocity.y, -descendSpeed, 0);
         rb.velocity = new Vector3(rb.velocity.x, verticalVelocity, rb.velocity.z);
+    }
 
-        // Rotate Left and Right
+    private void RotateLeftRight()
+    {
         if (Input.GetKey(KeyCode.K))
         {
             transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
