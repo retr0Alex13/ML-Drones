@@ -22,7 +22,7 @@ public class FPVDroneController : MonoBehaviour
         rb.angularDrag = angularDrag;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Basic Movement
         float horizontal = Input.GetAxis("Horizontal");
@@ -39,7 +39,7 @@ public class FPVDroneController : MonoBehaviour
         // Lean in the direction of movement
         if (moveDirection.magnitude > 0)
         {
-            Quaternion leanRotation = Quaternion.Euler(-vertical * pitchIntensity, 0, -horizontal * leanIntensity);
+            Quaternion leanRotation = Quaternion.Euler(vertical * pitchIntensity, 0, -horizontal * leanIntensity);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0) * leanRotation, Time.deltaTime * 5f);
         }
         else
