@@ -1726,6 +1726,7 @@ GameObject:
   - component: {fileID: 543450652389574888}
   - component: {fileID: 919132148182733395}
   - component: {fileID: 919132148182733396}
+  - component: {fileID: 919132148182733397}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
@@ -1742,8 +1743,8 @@ Rigidbody:
   m_GameObject: {fileID: 919132148182733394}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 4
-  m_AngularDrag: 4
+  m_Drag: 2
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1772,14 +1773,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7135d7a2380529748a00ce4edfa1d3d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 150
   rotationSpeed: 100
   ascendSpeed: 7
   descendSpeed: 4
+  maxSpeed: 100
+  acceleration: 15
+  deceleration: 5
   leanIntensity: 40
-  pitchIntensity: 20
+  pitchIntensity: 30
   stabilizationSpeed: 5
-  hoverHeight: 5
+--- !u!114 &919132148182733397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148182733394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4bc9952d68be64a9fdb99bece45cbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotors:
+  - {fileID: 8707273952042987283}
+  - {fileID: 8416272006945517286}
+  - {fileID: 2076850631396967282}
+  - {fileID: 1582813068382044001}
+  maxRotorSpeed: 2000
+  minRotorSpeed: 1000
+  rotorSpeedMultiplier: 1
 --- !u!1 &1582813068382044001
 GameObject:
   m_ObjectHideFlags: 0

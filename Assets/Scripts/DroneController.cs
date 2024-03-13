@@ -3,25 +3,32 @@ using UnityEngine;
 public class DroneController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float ascendSpeed = 5f;
     [SerializeField] private float descendSpeed = 3f;
 
-    [Header("Control Intensity")]
+    [Space(10)]
+
+    [Header("Speed Control")]
+    [SerializeField] private float maxSpeed = 200f;
+    [SerializeField] private float acceleration = 15f;
+    [SerializeField] private float deceleration = 5f;
+
+    [Space(10)]
+
+    [Header("Drone Lean")]
     [SerializeField] private float leanIntensity = 20f;
     [SerializeField] private float pitchIntensity = 10f;
     [SerializeField] private float stabilizationSpeed = 5f;
 
-    [Header("Altitude Settings")]
-    [SerializeField] private float hoverHeight = 5f;
-
     private Rigidbody rb;
-    private float targetAltitude = 0f;
+    private float targetAltitude;
+    private float currentSpeed;
 
-    private void Start()
+    private void Awake()
     {
-        InitializeRigidbody();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
     }
 
     private void FixedUpdate()
@@ -31,12 +38,12 @@ public class DroneController : MonoBehaviour
         Lean();
         AltitudeControl();
         RotateLeftRight();
+        HandleSpeed();
     }
 
-    private void InitializeRigidbody()
+    private void Update()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        Debug.Log(rb.velocity.magnitude);
     }
 
     private void BasicMovement()
@@ -45,15 +52,19 @@ public class DroneController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = new Vector3(horizontal, 0, vertical).normalized;
-        Vector3 velocity = moveDirection * moveSpeed;
+        Vector3 velocity = moveDirection * currentSpeed;
         rb.AddRelativeForce(velocity);
     }
 
     private void Rotate()
     {
-        float yaw = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
-        transform.Rotate(0, yaw, 0);
+        float horizontal = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+        float vertical = Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime;
+
+        Vector3 rotation = new Vector3(-vertical, horizontal, 0f);
+        transform.Rotate(rotation);
     }
+
 
     private void Lean()
     {
@@ -96,4 +107,23 @@ public class DroneController : MonoBehaviour
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
         }
     }
+
+private void HandleSpeed()
+{
+    float horizontalInput = Input.GetAxis("Horizontal");
+    float verticalInput = Input.GetAxis("Vertical");
+
+    // Accelerate or decelerate based on input
+    if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
+    {
+        // Accelerate towards the maximum speed
+        currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
+    }
+    else
+    {
+        // Decelerate to zero when no input is given
+        currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * Time.deltaTime);
+    }
+}
+
 }
