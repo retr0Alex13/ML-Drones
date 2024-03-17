@@ -13,7 +13,7 @@ public class DroneController : MonoBehaviour
     [Header("Speed Control")]
     [SerializeField] private float maxSpeed = 200f;
     [SerializeField] private float acceleration = 15f;
-    [SerializeField] private float deceleration = 5f;
+    [SerializeField] private float deceleration = 15f;
 
     [Space(10)]
 

@@ -4,6 +4,7 @@ using UnityEngine;
 public class DroneSoundController : MonoBehaviour
 {
     [SerializeField] private float changePitchAmount = 1.5f;
+    [SerializeField] private float speedToChangePitch = 5f;
     [SerializeField] private Rigidbody droneRigidBody;
 
     private float defaultPitch;
@@ -21,12 +22,12 @@ public class DroneSoundController : MonoBehaviour
         float velocityMagnitude = droneRigidBody.velocity.magnitude;
 
         // Calculate the target pitch based on the velocity magnitude
-        float targetPitch = velocityMagnitude > 0.5f ? defaultPitch * changePitchAmount : defaultPitch;
+        float targetPitch = velocityMagnitude > speedToChangePitch ? defaultPitch * changePitchAmount : defaultPitch;
 
         // Smoothly change the pitch of the audio source
         float currentPitch = audioSource.pitch;
         float pitchChangeSpeed = 1f; // Adjust this value to control the speed of pitch change
-
+        
         // Smoothly change the pitch of the audio source
         audioSource.pitch = Mathf.Lerp(currentPitch, targetPitch, Time.deltaTime * pitchChangeSpeed);
     }
