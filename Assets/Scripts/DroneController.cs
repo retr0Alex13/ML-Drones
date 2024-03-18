@@ -13,7 +13,7 @@ public class DroneController : MonoBehaviour
     [Header("Speed Control")]
     [SerializeField] private float maxSpeed = 200f;
     [SerializeField] private float acceleration = 15f;
-    [SerializeField] private float deceleration = 15f;
+    [SerializeField] private float deceleration = 5f;
 
     [Space(10)]
 
@@ -28,8 +28,7 @@ public class DroneController : MonoBehaviour
 
     private float horizontalInput;
     private float verticalInput;
-    private float attitudeInput;
-
+    private float altitudeInput;
 
     private void Awake()
     {
@@ -43,17 +42,15 @@ public class DroneController : MonoBehaviour
         Rotate();
         Lean();
         AltitudeControl();
-        //RotateLeftRight();
+        RotateLeftRight();
         HandleSpeed();
-    }
-
-    private void Update()
-    {
-        Debug.Log(rb.velocity.magnitude);
     }
 
     private void BasicMovement()
     {
+        //float horizontal = Input.GetAxis("Horizontal");
+        //float vertical = Input.GetAxis("Vertical");
+
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
         Vector3 velocity = moveDirection * currentSpeed;
         rb.AddRelativeForce(velocity);
@@ -61,21 +58,24 @@ public class DroneController : MonoBehaviour
 
     private void Rotate()
     {
-        float horizontal = horizontalInput * rotationSpeed * Time.deltaTime;
-        float vertical = verticalInput * rotationSpeed * Time.deltaTime;
+        //float horizontal = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+        //float vertical = Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime;
 
-        Vector3 rotation = new Vector3(-vertical, horizontal, 0f);
+        Vector3 rotation = new Vector3(-verticalInput, horizontalInput, 0f);
         transform.Rotate(rotation);
     }
 
 
     private void Lean()
     {
+        //float horizontal = Input.GetAxis("Horizontal");
+        //float vertical = Input.GetAxis("Vertical");
+
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
 
         if (moveDirection.magnitude > 0)
         {
-            Quaternion leanRotation = Quaternion.Euler(horizontalInput * pitchIntensity, 0, -verticalInput * leanIntensity);
+            Quaternion leanRotation = Quaternion.Euler(verticalInput * pitchIntensity, 0, -horizontalInput * leanIntensity);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0) * leanRotation, Time.deltaTime * 5f);
         }
         else
@@ -87,8 +87,7 @@ public class DroneController : MonoBehaviour
 
     private void AltitudeControl()
     {
-        float altitudeInput = attitudeInput;
-
+        //float altitudeInput = Input.GetAxis("Jump") - Input.GetAxis("Fire1");
         targetAltitude += altitudeInput * ascendSpeed * Time.deltaTime;
         targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue);
 
@@ -97,20 +96,23 @@ public class DroneController : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, verticalVelocity, rb.velocity.z);
     }
 
-    //private void RotateLeftRight()
-    //{
-    //    if (Input.GetKey(KeyCode.K))
-    //    {
-    //        transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
-    //    }
-    //    else if (Input.GetKey(KeyCode.L))
-    //    {
-    //        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-    //    }
-    //}
+    private void RotateLeftRight()
+    {
+        if (Input.GetKey(KeyCode.K))
+        {
+            transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.L))
+        {
+            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+        }
+    }
 
     private void HandleSpeed()
     {
+        //float horizontalInput = Input.GetAxis("Horizontal");
+        //float verticalInput = Input.GetAxis("Vertical");
+
         // Accelerate or decelerate based on input
         if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
         {
@@ -124,11 +126,11 @@ public class DroneController : MonoBehaviour
         }
     }
 
-    public void SetInputs(float horizontalInput, float verticalInput, float attitudeInput)
+    public void SetInputs(float horizontal, float vertical, float attitude)
     {
-        this.horizontalInput = horizontalInput;
-        this.verticalInput = verticalInput;
-        this.attitudeInput = attitudeInput;
+        horizontalInput = horizontal;
+        verticalInput = vertical;
+        altitudeInput = attitude;
     }
 
 }
