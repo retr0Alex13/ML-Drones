@@ -43,7 +43,7 @@ public class DroneController : MonoBehaviour
         Rotate();
         Lean();
         AltitudeControl();
-        RotateLeftRight();
+        //RotateLeftRight();
         HandleSpeed();
     }
 
@@ -54,9 +54,6 @@ public class DroneController : MonoBehaviour
 
     private void BasicMovement()
     {
-        //float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
         Vector3 velocity = moveDirection * currentSpeed;
         rb.AddRelativeForce(velocity);
@@ -67,9 +64,6 @@ public class DroneController : MonoBehaviour
         float horizontal = horizontalInput * rotationSpeed * Time.deltaTime;
         float vertical = verticalInput * rotationSpeed * Time.deltaTime;
 
-        //float horizontal = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
-        //float vertical = Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime;
-
         Vector3 rotation = new Vector3(-vertical, horizontal, 0f);
         transform.Rotate(rotation);
     }
@@ -77,9 +71,6 @@ public class DroneController : MonoBehaviour
 
     private void Lean()
     {
-        //float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
 
         if (moveDirection.magnitude > 0)
@@ -98,7 +89,6 @@ public class DroneController : MonoBehaviour
     {
         float altitudeInput = attitudeInput;
 
-        //float altitudeInput = Input.GetAxis("Jump") - Input.GetAxis("Fire1");
         targetAltitude += altitudeInput * ascendSpeed * Time.deltaTime;
         targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue);
 
@@ -107,23 +97,20 @@ public class DroneController : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, verticalVelocity, rb.velocity.z);
     }
 
-    private void RotateLeftRight()
-    {
-        if (Input.GetKey(KeyCode.K))
-        {
-            transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
-        }
-        else if (Input.GetKey(KeyCode.L))
-        {
-            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-        }
-    }
+    //private void RotateLeftRight()
+    //{
+    //    if (Input.GetKey(KeyCode.K))
+    //    {
+    //        transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
+    //    }
+    //    else if (Input.GetKey(KeyCode.L))
+    //    {
+    //        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+    //    }
+    //}
 
     private void HandleSpeed()
     {
-        //float horizontalInput = Input.GetAxis("Horizontal");
-        //float verticalInput = Input.GetAxis("Vertical");
-
         // Accelerate or decelerate based on input
         if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
         {
