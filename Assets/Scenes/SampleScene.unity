@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 47614178}
   - component: {fileID: 47614177}
   - component: {fileID: 47614176}
+  - component: {fileID: 47614180}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Untagged
@@ -228,6 +229,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &47614180
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47614175}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &193831230
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +268,7 @@ GameObject:
   - component: {fileID: 193831233}
   - component: {fileID: 193831232}
   - component: {fileID: 193831231}
+  - component: {fileID: 193831235}
   m_Layer: 0
   m_Name: Obstacle (3)
   m_TagString: Untagged
@@ -333,6 +362,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &193831235
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193831230}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +573,7 @@ GameObject:
   - component: {fileID: 373698409}
   - component: {fileID: 373698408}
   - component: {fileID: 373698407}
+  - component: {fileID: 373698411}
   m_Layer: 0
   m_Name: Obstacle (5)
   m_TagString: Untagged
@@ -610,6 +667,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &373698411
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373698406}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,6 +1025,7 @@ GameObject:
   - component: {fileID: 1064490682}
   - component: {fileID: 1064490681}
   - component: {fileID: 1064490680}
+  - component: {fileID: 1064490684}
   m_Layer: 0
   m_Name: Obstacle (4)
   m_TagString: Untagged
@@ -1034,6 +1119,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1064490684
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064490679}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1173757242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,6 +1158,7 @@ GameObject:
   - component: {fileID: 1173757245}
   - component: {fileID: 1173757244}
   - component: {fileID: 1173757243}
+  - component: {fileID: 1173757247}
   m_Layer: 0
   m_Name: Obstacle (7)
   m_TagString: Untagged
@@ -1139,6 +1252,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1173757247
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173757242}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1294409742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,6 +1291,7 @@ GameObject:
   - component: {fileID: 1294409745}
   - component: {fileID: 1294409744}
   - component: {fileID: 1294409743}
+  - component: {fileID: 1294409747}
   m_Layer: 0
   m_Name: Obstacle (2)
   m_TagString: Untagged
@@ -1244,6 +1385,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1294409747
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294409742}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1302148491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,6 +1529,7 @@ GameObject:
   - component: {fileID: 1479642109}
   - component: {fileID: 1479642108}
   - component: {fileID: 1479642107}
+  - component: {fileID: 1479642111}
   m_Layer: 0
   m_Name: Obstacle (1)
   m_TagString: Untagged
@@ -1454,6 +1623,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1479642111
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479642106}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1651259389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,6 +1662,7 @@ GameObject:
   - component: {fileID: 1651259392}
   - component: {fileID: 1651259391}
   - component: {fileID: 1651259390}
+  - component: {fileID: 1651259394}
   m_Layer: 0
   m_Name: Obstacle (6)
   m_TagString: Untagged
@@ -1559,6 +1756,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758788166}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1651259394
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651259389}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1758788165
 GameObject:
   m_ObjectHideFlags: 0

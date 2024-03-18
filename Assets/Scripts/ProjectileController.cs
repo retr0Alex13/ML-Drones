@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     [SerializeField] private float explotionRadius = 5f;
-    // Add particle effect to the projectile
+    [SerializeField] private GameObject explosionFX;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -29,6 +29,6 @@ public class ProjectileController : MonoBehaviour
             }
             // Damage damagable objects
         }
-        // Enable particle effect
+        Instantiate(explosionFX, transform.position, Quaternion.identity);
     }
 }
