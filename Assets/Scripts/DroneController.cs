@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 
-public class DroneController : MonoBehaviour
+public class DroneController : MonoBehaviour, IDamageable
 {
+    public static event Action OnDroneCollision;
+
     [Header("Movement Settings")]
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float ascendSpeed = 5f;
@@ -22,6 +24,8 @@ public class DroneController : MonoBehaviour
     [SerializeField] private float pitchIntensity = 10f;
     [SerializeField] private float stabilizationSpeed = 5f;
 
+    private EntityHealth droneHealth;
+
     private Rigidbody rb;
     private float targetAltitude;
     private float currentSpeed;
@@ -32,6 +36,7 @@ public class DroneController : MonoBehaviour
 
     private void Awake()
     {
+        droneHealth = GetComponent<EntityHealth>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
@@ -44,6 +49,18 @@ public class DroneController : MonoBehaviour
         AltitudeControl();
         RotateLeftRight();
         HandleSpeed();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Projectile"))
+        {
+            return;
+        }
+        if (collision.relativeVelocity.magnitude > 10f)
+        {
+            OnDroneCollision?.Invoke();
+        }
     }
 
     private void BasicMovement()
@@ -133,4 +150,8 @@ public class DroneController : MonoBehaviour
         altitudeInput = attitude;
     }
 
+    public void Damage(float damage)
+    {
+        droneHealth.TakeDamage(damage);
+    }
 }

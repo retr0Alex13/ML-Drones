@@ -1,14 +1,24 @@
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 using UnityEngine;
 
 public class DroneAgent : Agent
 {
     private DroneController droneController;
+    private Rigidbody droneRigidBody;
 
     void Start()
     {
         droneController = GetComponent<DroneController>();
+        droneRigidBody = GetComponent<Rigidbody>();
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        sensor.AddObservation(transform.position);
+        sensor.AddObservation(transform.rotation);
+        sensor.AddObservation(droneRigidBody.velocity.magnitude);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -29,6 +39,7 @@ public class DroneAgent : Agent
                 forwardAmount = -1f;
                 break;
         }
+
         switch (actions.DiscreteActions[1])
         {
             case 0:

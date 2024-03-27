@@ -1,15 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
+    [SerializeField] private float damageAmount = 10f;
     [SerializeField] private float explotionRadius = 5f;
     [SerializeField] private GameObject explosionFX;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnEnable()
     {
-        Explode();
+        DroneController.OnDroneCollision += Explode;
+    }
+
+    private void OnDisable()
+    {
+        DroneController.OnDroneCollision -= Explode;
+    }
+
+    private void Update()
+    {
+        transform.position = transform.parent.position;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, explotionRadius);
     }
 
     private void Explode()
@@ -23,12 +38,16 @@ public class ProjectileController : MonoBehaviour
             {
                 continue;
             }
+            if (colliders[i].TryGetComponent(out IDamageable damageable))
+            {
+                damageable.Damage(damageAmount);
+            }
             if (colliders[i].TryGetComponent(out Rigidbody rigidbody))
             {
                 rigidbody.AddExplosionForce(1000, transform.position, explotionRadius);
             }
-            // Damage damagable objects
         }
         Instantiate(explosionFX, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
