@@ -1,10 +1,7 @@
-using System;
 using UnityEngine;
 
-public class DroneController : MonoBehaviour, IDamageable
+public class DroneController : MonoBehaviour
 {
-    public static event Action OnDroneCollision;
-
     [Header("Movement Settings")]
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float ascendSpeed = 5f;
@@ -24,8 +21,6 @@ public class DroneController : MonoBehaviour, IDamageable
     [SerializeField] private float pitchIntensity = 10f;
     [SerializeField] private float stabilizationSpeed = 5f;
 
-    private EntityHealth droneHealth;
-
     private Rigidbody rb;
     private float targetAltitude;
     private float currentSpeed;
@@ -36,7 +31,6 @@ public class DroneController : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        droneHealth = GetComponent<EntityHealth>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
@@ -47,27 +41,12 @@ public class DroneController : MonoBehaviour, IDamageable
         Rotate();
         Lean();
         AltitudeControl();
-        RotateLeftRight();
         HandleSpeed();
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.transform.CompareTag("Projectile"))
-        {
-            return;
-        }
-        if (collision.relativeVelocity.magnitude > 10f)
-        {
-            OnDroneCollision?.Invoke();
-        }
+        Debug.Log(rb.velocity.magnitude);
     }
 
     private void BasicMovement()
     {
-        //float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
         Vector3 velocity = moveDirection * currentSpeed;
         rb.AddRelativeForce(velocity);
@@ -75,9 +54,6 @@ public class DroneController : MonoBehaviour, IDamageable
 
     private void Rotate()
     {
-        //float horizontal = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
-        //float vertical = Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime;
-
         Vector3 rotation = new Vector3(-verticalInput, horizontalInput, 0f);
         transform.Rotate(rotation);
     }
@@ -85,9 +61,6 @@ public class DroneController : MonoBehaviour, IDamageable
 
     private void Lean()
     {
-        //float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
 
         if (moveDirection.magnitude > 0)
@@ -104,7 +77,6 @@ public class DroneController : MonoBehaviour, IDamageable
 
     private void AltitudeControl()
     {
-        //float altitudeInput = Input.GetAxis("Jump") - Input.GetAxis("Fire1");
         targetAltitude += altitudeInput * ascendSpeed * Time.deltaTime;
         targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue);
 
@@ -127,18 +99,12 @@ public class DroneController : MonoBehaviour, IDamageable
 
     private void HandleSpeed()
     {
-        //float horizontalInput = Input.GetAxis("Horizontal");
-        //float verticalInput = Input.GetAxis("Vertical");
-
-        // Accelerate or decelerate based on input
         if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
         {
-            // Accelerate towards the maximum speed
             currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
         }
         else
         {
-            // Decelerate to zero when no input is given
             currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * Time.deltaTime);
         }
     }
@@ -148,10 +114,5 @@ public class DroneController : MonoBehaviour, IDamageable
         horizontalInput = horizontal;
         verticalInput = vertical;
         altitudeInput = attitude;
-    }
-
-    public void Damage(float damage)
-    {
-        droneHealth.TakeDamage(damage);
     }
 }

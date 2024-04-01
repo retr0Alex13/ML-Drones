@@ -1,20 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    [SerializeField] private float damageAmount = 10f;
-    [SerializeField] private float explotionRadius = 5f;
+    [SerializeField] private float explosionRadius = 5f;
     [SerializeField] private GameObject explosionFX;
-
-    private void OnEnable()
-    {
-        DroneController.OnDroneCollision += Explode;
-    }
-
-    private void OnDisable()
-    {
-        DroneController.OnDroneCollision -= Explode;
-    }
 
     private void Update()
     {
@@ -24,30 +14,30 @@ public class ProjectileController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explotionRadius);
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
-    private void Explode()
+    public List<Collider> Explode()
     {
-        int maxColliders = 20;
-        Collider[] colliders = new Collider[maxColliders];
-        int colliderNumbers = Physics.OverlapSphereNonAlloc(transform.position, explotionRadius, colliders);
-        for (int i = 0; i < colliderNumbers; i++)
+        // Create a list to store the colliders
+        List<Collider> colliders = new List<Collider>();
+
+        // Get all colliders within the explosion radius
+        Collider[] overlappedColliders = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        foreach (Collider collider in overlappedColliders)
         {
-            if (colliders[i] == null)
+            if (collider != null && collider.TryGetComponent(out Rigidbody rigidbody))
             {
-                continue;
-            }
-            if (colliders[i].TryGetComponent(out IDamageable damageable))
-            {
-                damageable.Damage(damageAmount);
-            }
-            if (colliders[i].TryGetComponent(out Rigidbody rigidbody))
-            {
-                rigidbody.AddExplosionForce(1000, transform.position, explotionRadius);
+                rigidbody.AddExplosionForce(1000, transform.position, explosionRadius);
+                colliders.Add(collider);
             }
         }
+
+        // Instantiate the explosion effect
         Instantiate(explosionFX, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+
+        // Return the colliders array
+        return colliders;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -5,13 +6,22 @@ using UnityEngine;
 
 public class DroneAgent : Agent
 {
+    [SerializeField] private ProjectileController projectile;
+
     private DroneController droneController;
     private Rigidbody droneRigidBody;
 
-    void Start()
+    public override void Initialize()
     {
         droneController = GetComponent<DroneController>();
         droneRigidBody = GetComponent<Rigidbody>();
+    }
+
+    public override void OnEpisodeBegin()
+    {
+        ResetDrone();
+        // Randomize surroundings
+        // Randomize enemy position
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -23,6 +33,8 @@ public class DroneAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+        AddReward(-1f / MaxStep);
+
         float forwardAmount = 0f;
         float turnAmount = 0f;
         float altitudeAmount = 0f;
@@ -68,6 +80,7 @@ public class DroneAgent : Agent
 
         droneController.SetInputs(turnAmount, forwardAmount, altitudeAmount);
     }
+
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         int forwardAction = 0;
@@ -104,5 +117,60 @@ public class DroneAgent : Agent
         discreteActions[0] = forwardAction;
         discreteActions[1] = turnAmount;
         discreteActions[2] = altitudeAmount;
+    }
+
+    private void ResetDrone()
+    {
+        transform.localRotation = Quaternion.identity;
+        ResetDroneVelocity();
+        SetDroneRandomPosition();
+    }
+
+    private void ResetDroneVelocity()
+    {
+        droneRigidBody.velocity = new Vector3(0.01f, 0f);
+        droneRigidBody.angularVelocity = Vector3.zero;
+    }
+
+    private void SetDroneRandomPosition()
+    {
+        transform.localPosition = new Vector3(Random.Range(8f, 50f), 5f, Random.Range(-4f, 60f));
+        transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Projectile"))
+        {
+            return;
+        }
+        if (collision.transform.CompareTag("Obstacle"))
+        {
+            AddReward(-1f);
+        }
+        if (droneRigidBody.velocity.magnitude > 10f)
+        {
+            List<Collider> objects = projectile.Explode();
+            Debug.Log(objects);
+            if(objects == null)
+            {
+                return;
+            }
+            else
+            {
+                foreach (Collider obj in objects)
+                {
+                    Debug.Log(obj.gameObject.name);
+                    if (obj.transform.TryGetComponent(out Enemy enemy))
+                    {
+                        AddReward(5f);
+                        EndEpisode();
+                    }
+                }
+            }
+            Debug.Log("No Enemies");
+            AddReward(-1f);
+            EndEpisode();
+        }
     }
 }
