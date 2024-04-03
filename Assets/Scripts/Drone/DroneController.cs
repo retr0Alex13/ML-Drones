@@ -33,6 +33,7 @@ public class DroneController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        targetAltitude = transform.position.y; // Initialize targetAltitude with the initial y-position
     }
 
     private void FixedUpdate()
@@ -42,7 +43,6 @@ public class DroneController : MonoBehaviour
         Lean();
         AltitudeControl();
         HandleSpeed();
-        Debug.Log(rb.velocity.magnitude);
     }
 
     private void BasicMovement()
@@ -55,7 +55,7 @@ public class DroneController : MonoBehaviour
     private void Rotate()
     {
         Vector3 rotation = new Vector3(-verticalInput, horizontalInput, 0f);
-        transform.Rotate(rotation);
+        transform.Rotate(rotation, Space.Self);
     }
 
 
@@ -66,19 +66,19 @@ public class DroneController : MonoBehaviour
         if (moveDirection.magnitude > 0)
         {
             Quaternion leanRotation = Quaternion.Euler(verticalInput * pitchIntensity, 0, -horizontalInput * leanIntensity);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0) * leanRotation, Time.deltaTime * 5f);
+            transform.localRotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0) * leanRotation, Time.deltaTime * 5f);
         }
         else
         {
             Quaternion levelRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-            transform.rotation = Quaternion.Slerp(transform.rotation, levelRotation, Time.deltaTime * stabilizationSpeed);
+            transform.localRotation = Quaternion.Slerp(transform.rotation, levelRotation, Time.deltaTime * stabilizationSpeed);
         }
     }
 
     private void AltitudeControl()
     {
         targetAltitude += altitudeInput * ascendSpeed * Time.deltaTime;
-        targetAltitude = Mathf.Clamp(targetAltitude, 0f, float.MaxValue);
+        targetAltitude = Mathf.Clamp(targetAltitude, transform.position.y, float.MaxValue); // Clamp targetAltitude with the initial y-position as the minimum
 
         float altitudeError = targetAltitude - transform.position.y;
         float verticalVelocity = altitudeError * ascendSpeed + Mathf.Clamp(rb.velocity.y, -descendSpeed, 0);
@@ -89,11 +89,11 @@ public class DroneController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.K))
         {
-            transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime, Space.Self);
         }
         else if (Input.GetKey(KeyCode.L))
         {
-            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
         }
     }
 
