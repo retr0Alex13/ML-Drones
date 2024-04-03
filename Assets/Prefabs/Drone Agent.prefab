@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 2725035075790148634}
   - component: {fileID: 4533980964233037747}
   - component: {fileID: 1776462649710892820}
+  - component: {fileID: 2590632795872210633}
   m_Layer: 0
   m_Name: Drone Agent
   m_TagString: Untagged
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 100
   ascendSpeed: 7
-  descendSpeed: 10
+  descendSpeed: 15
   maxSpeed: 40
   acceleration: 5
   deceleration: 10
@@ -196,6 +197,8 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
+  projectile: {fileID: 3473100775059501967}
+  enemy: {fileID: 0}
 --- !u!114 &4533980964233037747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 1
+  DecisionPeriod: 2
   DecisionStep: 0
   TakeActionsBetweenDecisions: 1
 --- !u!114 &1776462649710892820
@@ -242,6 +245,22 @@ MonoBehaviour:
   m_UseChildActuators: 1
   m_DeterministicInference: 0
   m_ObservableAttributeHandling: 0
+--- !u!114 &2590632795872210633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902971266435700110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Record: 0
+  NumStepsToRecord: 0
+  DemonstrationName: FPV-Drone
+  DemonstrationDirectory: Demos
 --- !u!1 &2013536846404754680
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,13 +370,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2268753532848953296}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.078459114, y: 0, z: 0, w: 0.99691737}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1116656079445787038}
-  m_LocalEulerAnglesHint: {x: 9, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7465677148328350651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,14 +393,14 @@ MonoBehaviour:
   m_DetectableTags:
   - Obstacle
   - Enemy
-  m_RaysPerDirection: 5
+  m_RaysPerDirection: 8
   m_MaxRayDegrees: 78.7
   m_SphereCastRadius: 2
   m_RayLength: 483
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
-  m_ObservationStacks: 1
+  m_ObservationStacks: 2
   m_AlternatingRayOrder: 1
   m_UseBatchedRaycasts: 0
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
@@ -534,8 +553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f2a64624cbdb742929e0d8cfe208c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
-  explotionRadius: 15
+  explosionRadius: 5
   explosionFX: {fileID: 100006, guid: 93485fd5fc2ccf2439cb3239186f6382, type: 3}
 --- !u!1 &3232182102874700405
 GameObject:

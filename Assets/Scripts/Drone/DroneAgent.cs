@@ -7,6 +7,7 @@ using UnityEngine;
 public class DroneAgent : Agent
 {
     [SerializeField] private ProjectileController projectile;
+    [SerializeField] private Enemy enemy;
 
     private DroneController droneController;
     private Rigidbody droneRigidBody;
@@ -20,8 +21,8 @@ public class DroneAgent : Agent
     public override void OnEpisodeBegin()
     {
         ResetDrone();
+        enemy.ResetEnemy();
         // Randomize surroundings
-        // Randomize enemy position
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -134,7 +135,7 @@ public class DroneAgent : Agent
 
     private void SetDroneRandomPosition()
     {
-        transform.localPosition = new Vector3(Random.Range(8f, 50f), 5f, Random.Range(-4f, 60f));
+        transform.localPosition = new Vector3(Random.Range(8f, 50f), Random.Range(5f, 26f), Random.Range(-3f, -70f));
         transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
     }
 
@@ -143,10 +144,6 @@ public class DroneAgent : Agent
         if (collision.transform.CompareTag("Projectile"))
         {
             return;
-        }
-        if (collision.transform.CompareTag("Obstacle"))
-        {
-            AddReward(-1f);
         }
         if (droneRigidBody.velocity.magnitude > 10f)
         {
@@ -165,12 +162,27 @@ public class DroneAgent : Agent
                     {
                         AddReward(5f);
                         EndEpisode();
+                        return;
                     }
                 }
             }
             Debug.Log("No Enemies");
             AddReward(-1f);
             EndEpisode();
+        }
+        else if (collision.transform.CompareTag("Obstacle"))
+        {
+            Debug.Log("Hit Obstacle");
+            AddReward(-1f);
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.transform.CompareTag("Obstacle"))
+        {
+            Debug.Log("Hit Obstacle");
+            AddReward(-1f);
         }
     }
 }
