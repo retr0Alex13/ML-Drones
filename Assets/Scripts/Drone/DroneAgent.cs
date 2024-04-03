@@ -8,6 +8,7 @@ public class DroneAgent : Agent
 {
     [SerializeField] private ProjectileController projectile;
     [SerializeField] private Enemy enemy;
+    [SerializeField] private Collider spawnBoundsCollider;
 
     private DroneController droneController;
     private Rigidbody droneRigidBody;
@@ -135,7 +136,10 @@ public class DroneAgent : Agent
 
     private void SetDroneRandomPosition()
     {
-        transform.localPosition = new Vector3(Random.Range(8f, 50f), Random.Range(5f, 26f), Random.Range(-3f, -70f));
+        transform.localPosition = new Vector3(
+            Random.Range(spawnBoundsCollider.bounds.min.x, spawnBoundsCollider.bounds.max.x),
+            Random.Range(spawnBoundsCollider.bounds.min.y, spawnBoundsCollider.bounds.max.y),
+            Random.Range(spawnBoundsCollider.bounds.min.z, spawnBoundsCollider.bounds.max.z));
         transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
     }
 
@@ -173,7 +177,7 @@ public class DroneAgent : Agent
         else if (collision.transform.CompareTag("Obstacle"))
         {
             Debug.Log("Hit Obstacle");
-            AddReward(-1f);
+            OnObstacleHit();
         }
     }
 
@@ -181,8 +185,14 @@ public class DroneAgent : Agent
     {
         if (collision.transform.CompareTag("Obstacle"))
         {
-            Debug.Log("Hit Obstacle");
-            AddReward(-1f);
+            OnObstacleHit();
         }
+    }
+
+    public void OnObstacleHit()
+    {
+        Debug.Log("Hit Obstacle");
+        AddReward(-1f);
+        //EndEpisode();
     }
 }

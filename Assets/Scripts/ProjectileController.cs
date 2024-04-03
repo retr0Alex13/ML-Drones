@@ -19,10 +19,8 @@ public class ProjectileController : MonoBehaviour
 
     public List<Collider> Explode()
     {
-        // Create a list to store the colliders
         List<Collider> colliders = new List<Collider>();
 
-        // Get all colliders within the explosion radius
         Collider[] overlappedColliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
         foreach (Collider collider in overlappedColliders)
@@ -34,10 +32,19 @@ public class ProjectileController : MonoBehaviour
             }
         }
 
-        // Instantiate the explosion effect
         Instantiate(explosionFX, transform.position, Quaternion.identity);
 
-        // Return the colliders array
         return colliders;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Obstacle"))
+        {
+            if (transform.parent.parent.TryGetComponent(out DroneAgent drone))
+            {
+                drone.OnObstacleHit();
+            }
+        }
     }
 }

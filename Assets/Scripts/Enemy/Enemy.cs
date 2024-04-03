@@ -1,8 +1,8 @@
-using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] Collider spawnBoundsCollider;
     private Rigidbody rigidBody;
 
     private void Start()
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
         rigidBody.angularVelocity = Vector3.zero;
 
         // Randomize enemy position
-        float randomX = UnityEngine.Random.Range(-1f, 64);
+        float randomX = Random.Range(spawnBoundsCollider.bounds.min.x, spawnBoundsCollider.bounds.max.x);
         transform.localPosition = new Vector3(randomX, 2.25f, 51f);
     }
 }
