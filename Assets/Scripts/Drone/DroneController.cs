@@ -109,6 +109,11 @@ public class DroneController : MonoBehaviour
         }
     }
 
+    public void ResetSpeed()
+    {
+        currentSpeed = 0f;
+    }
+
     public void SetInputs(float horizontal, float vertical, float attitude)
     {
         horizontalInput = horizontal;

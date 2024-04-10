@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
@@ -6,12 +8,13 @@ using UnityEngine;
 
 public class DroneAgent : Agent
 {
-    [SerializeField] private ProjectileController projectile;
-    [SerializeField] private Enemy enemy;
-    [SerializeField] private Collider spawnBoundsCollider;
+    [SerializeField] private MeshRenderer ground;
+
+    public event Action OnNewEpisode;
 
     private DroneController droneController;
     private Rigidbody droneRigidBody;
+
 
     public override void Initialize()
     {
@@ -22,14 +25,13 @@ public class DroneAgent : Agent
     public override void OnEpisodeBegin()
     {
         ResetDrone();
-        enemy.ResetEnemy();
-        // Randomize surroundings
+        OnNewEpisode?.Invoke();
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.position);
-        sensor.AddObservation(transform.rotation);
+        sensor.AddObservation(transform.localPosition);
+        sensor.AddObservation(transform.localRotation);
         sensor.AddObservation(droneRigidBody.velocity.magnitude);
     }
 
@@ -121,78 +123,52 @@ public class DroneAgent : Agent
         discreteActions[2] = altitudeAmount;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Drone collided with " + collision.gameObject.name);
+        if (collision.gameObject.TryGetComponent(out Enemy _))
+        {
+            OnGoalAchived();
+        }
+        else
+        {
+            SetReward(-1f);
+            EndEpisode();
+        }
+    }
+
     private void ResetDrone()
     {
-        transform.localRotation = Quaternion.identity;
         ResetDroneVelocity();
         SetDroneRandomPosition();
+        transform.localRotation = Quaternion.identity;
+        droneController.ResetSpeed(); // Reset the drone's speed to 0
     }
 
     private void ResetDroneVelocity()
     {
-        droneRigidBody.velocity = new Vector3(0.01f, 0f);
+        droneRigidBody.velocity = new Vector3(0.1f,0f);
         droneRigidBody.angularVelocity = Vector3.zero;
     }
 
     private void SetDroneRandomPosition()
     {
-        transform.localPosition = new Vector3(
-            Random.Range(spawnBoundsCollider.bounds.min.x, spawnBoundsCollider.bounds.max.x),
-            Random.Range(spawnBoundsCollider.bounds.min.y, spawnBoundsCollider.bounds.max.y),
-            Random.Range(spawnBoundsCollider.bounds.min.z, spawnBoundsCollider.bounds.max.z));
-        transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+        float xPos = UnityEngine.Random.Range(-3f, 3f);
+        transform.localPosition = new Vector3(xPos, 1.2f, -6);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnGoalAchived()
     {
-        if (collision.transform.CompareTag("Projectile"))
-        {
-            return;
-        }
-        if (droneRigidBody.velocity.magnitude > 10f)
-        {
-            List<Collider> objects = projectile.Explode();
-            Debug.Log(objects);
-            if(objects == null)
-            {
-                return;
-            }
-            else
-            {
-                foreach (Collider obj in objects)
-                {
-                    Debug.Log(obj.gameObject.name);
-                    if (obj.transform.TryGetComponent(out Enemy enemy))
-                    {
-                        AddReward(5f);
-                        EndEpisode();
-                        return;
-                    }
-                }
-            }
-            Debug.Log("No Enemies");
-            AddReward(-1f);
-            EndEpisode();
-        }
-        else if (collision.transform.CompareTag("Obstacle"))
-        {
-            Debug.Log("Hit Obstacle");
-            OnObstacleHit();
-        }
+        SetReward(1f);
+        StartCoroutine(ChangeGroundMaterial());
+        EndEpisode();
     }
 
-    private void OnCollisionStay(Collision collision)
+    private IEnumerator ChangeGroundMaterial()
     {
-        if (collision.transform.CompareTag("Obstacle"))
-        {
-            OnObstacleHit();
-        }
-    }
-
-    public void OnObstacleHit()
-    {
-        Debug.Log("Hit Obstacle");
-        AddReward(-1f);
-        //EndEpisode();
+        Color originalColor = ground.material.color;
+        ground.material.color = Color.green;
+        yield return new WaitForSeconds(0.5f);
+        ground.material.color = originalColor;
     }
 }
