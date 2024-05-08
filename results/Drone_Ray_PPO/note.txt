@@ -1,0 +1,2 @@
+Model that trained to move to target at clear sight at small range.
+Enemy and model at trained at random positions.

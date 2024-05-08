@@ -1,0 +1,2 @@
+Model that trained to move to target at small window.
+Enemy and model at trained at static positions.

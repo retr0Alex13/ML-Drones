@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -8,8 +6,6 @@ using UnityEngine;
 
 public class DroneAgent : Agent
 {
-    [SerializeField] private MeshRenderer ground;
-
     public event Action OnNewEpisode;
 
     private DroneController droneController;
@@ -125,13 +121,13 @@ public class DroneAgent : Agent
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Drone collided with " + collision.gameObject.name);
         if (collision.gameObject.TryGetComponent(out Enemy _))
         {
             OnGoalAchived();
         }
         else
         {
+            Debug.Log("No hit on enemy");
             SetReward(-1f);
             EndEpisode();
         }
@@ -153,22 +149,25 @@ public class DroneAgent : Agent
 
     private void SetDroneRandomPosition()
     {
-        float xPos = UnityEngine.Random.Range(-3f, 3f);
-        transform.localPosition = new Vector3(xPos, 1.2f, -6);
+        //float xPos = UnityEngine.Random.Range(1f, 4f);
+        //float zPos = UnityEngine.Random.Range(0.8f, 4f);
+        transform.localPosition = new Vector3(2.5f, 1.2f, 2.5f);
+        droneController.SetAltitude(1.2f);
     }
 
     private void OnGoalAchived()
     {
+        Debug.Log("Enemy hit");
         SetReward(1f);
-        StartCoroutine(ChangeGroundMaterial());
+        //StartCoroutine(ChangeGroundMaterial());
         EndEpisode();
     }
 
-    private IEnumerator ChangeGroundMaterial()
-    {
-        Color originalColor = ground.material.color;
-        ground.material.color = Color.green;
-        yield return new WaitForSeconds(0.5f);
-        ground.material.color = originalColor;
-    }
+    //private IEnumerator ChangeGroundMaterial()
+    //{
+    //    Color originalColor = ground.material.color;
+    //    ground.material.color = Color.green;
+    //    yield return new WaitForSeconds(0.5f);
+    //    ground.material.color = originalColor;
+    //}
 }

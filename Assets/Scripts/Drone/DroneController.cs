@@ -106,12 +106,18 @@ public class DroneController : MonoBehaviour
         else
         {
             currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * Time.deltaTime);
+            ResetSpeed();
         }
     }
 
     public void ResetSpeed()
     {
         currentSpeed = 0f;
+    }
+
+    public void SetAltitude(float altitude)
+    {
+        targetAltitude = altitude;
     }
 
     public void SetInputs(float horizontal, float vertical, float attitude)

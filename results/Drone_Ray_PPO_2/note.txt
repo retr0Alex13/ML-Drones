@@ -1,0 +1,2 @@
+Model that trained to move to target at wide window.
+Enemy and model at trained at random positions.
