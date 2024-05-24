@@ -1,0 +1,38 @@
+{
+    "FPV-Drone": {
+        "checkpoints": [
+            {
+                "steps": 499962,
+                "file_path": "results\\RaycastFPV-Drone_2\\FPV-Drone\\FPV-Drone-499962.onnx",
+                "reward": 0.801144003868103,
+                "creation_time": 1716544750.6344268,
+                "auxillary_file_paths": [
+                    "results\\RaycastFPV-Drone_2\\FPV-Drone\\FPV-Drone-499962.pt"
+                ]
+            },
+            {
+                "steps": 571920,
+                "file_path": "results\\RaycastFPV-Drone_2\\FPV-Drone\\FPV-Drone-571920.onnx",
+                "reward": 0.9672999978065491,
+                "creation_time": 1716544875.8584476,
+                "auxillary_file_paths": [
+                    "results\\RaycastFPV-Drone_2\\FPV-Drone\\FPV-Drone-571920.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 571920,
+            "file_path": "results\\RaycastFPV-Drone_2\\FPV-Drone.onnx",
+            "reward": 0.9672999978065491,
+            "creation_time": 1716544875.8584476,
+            "auxillary_file_paths": [
+                "results\\RaycastFPV-Drone_2\\FPV-Drone\\FPV-Drone-571920.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}

@@ -8,9 +8,13 @@ public class DroneAgent : Agent
 {
     public event Action OnNewEpisode;
 
+    [SerializeField]
+    private GameObject[] obstacles;
+
     private DroneController droneController;
     private Rigidbody droneRigidBody;
 
+    private GameObject currentObstacle;
 
     public override void Initialize()
     {
@@ -22,6 +26,27 @@ public class DroneAgent : Agent
     {
         ResetDrone();
         OnNewEpisode?.Invoke();
+        //currentObstacle?.SetActive(false);
+        //ActivateObstacle();
+    }
+
+    private void ActivateObstacle()
+    {
+        currentObstacle = PickRandomObstacle();
+        currentObstacle?.SetActive(true);
+    }
+
+    private GameObject PickRandomObstacle()
+    {
+        if (obstacles.Length > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, obstacles.Length);
+            return obstacles[randomIndex];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -138,7 +163,7 @@ public class DroneAgent : Agent
         ResetDroneVelocity();
         SetDroneRandomPosition();
         transform.localRotation = Quaternion.identity;
-        droneController.ResetSpeed(); // Reset the drone's speed to 0
+        droneController.ResetSpeed();
     }
 
     private void ResetDroneVelocity()
@@ -149,25 +174,17 @@ public class DroneAgent : Agent
 
     private void SetDroneRandomPosition()
     {
-        //float xPos = UnityEngine.Random.Range(1f, 4f);
-        //float zPos = UnityEngine.Random.Range(0.8f, 4f);
-        transform.localPosition = new Vector3(2.5f, 1.2f, 2.5f);
-        droneController.SetAltitude(1.2f);
+        float xPos = UnityEngine.Random.Range(-1.25f, 6.25f);
+        float zPos = UnityEngine.Random.Range(0.57f, 4f);
+        float altitude = UnityEngine.Random.Range(0.3f, 2.5f);
+        transform.localPosition = new Vector3(xPos, altitude, zPos);
+        droneController.SetAltitude(altitude);
     }
 
     private void OnGoalAchived()
     {
         Debug.Log("Enemy hit");
         SetReward(1f);
-        //StartCoroutine(ChangeGroundMaterial());
         EndEpisode();
     }
-
-    //private IEnumerator ChangeGroundMaterial()
-    //{
-    //    Color originalColor = ground.material.color;
-    //    ground.material.color = Color.green;
-    //    yield return new WaitForSeconds(0.5f);
-    //    ground.material.color = originalColor;
-    //}
 }

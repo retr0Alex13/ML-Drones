@@ -60,8 +60,8 @@ public class Enemy : MonoBehaviour
 
     private void RandomizePosition()
     {
-        //float xPos = Random.Range(0.6f, 4.4f);
-        //float zPos = Random.Range(9f, 14f);
-        transform.localPosition = new Vector3(2.5f, 1f, 9f);
+        float xPos = Random.Range(-1.4f, 6.5f);
+        float zPos = Random.Range(10.25f, 15.5f);
+        transform.localPosition = new Vector3(xPos, 1f, zPos);
     }
 }
