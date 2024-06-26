@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -9,12 +10,13 @@ public class DroneAgent : Agent
     public event Action OnNewEpisode;
 
     [SerializeField]
-    private GameObject[] obstacles;
+    private List<GameObject> obstacles;
+
+    [SerializeField]
+    private GameObject explosionVFX;
 
     private DroneController droneController;
     private Rigidbody droneRigidBody;
-
-    private GameObject currentObstacle;
 
     public override void Initialize()
     {
@@ -26,27 +28,6 @@ public class DroneAgent : Agent
     {
         ResetDrone();
         OnNewEpisode?.Invoke();
-        //currentObstacle?.SetActive(false);
-        //ActivateObstacle();
-    }
-
-    private void ActivateObstacle()
-    {
-        currentObstacle = PickRandomObstacle();
-        currentObstacle?.SetActive(true);
-    }
-
-    private GameObject PickRandomObstacle()
-    {
-        if (obstacles.Length > 0)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, obstacles.Length);
-            return obstacles[randomIndex];
-        }
-        else
-        {
-            return null;
-        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -104,6 +85,40 @@ public class DroneAgent : Agent
         }
 
         droneController.SetInputs(turnAmount, forwardAmount, altitudeAmount);
+    }
+    private void CheckRayCast()
+    {
+        RayPerceptionSensorComponent3D m_rayPerceptionSensorComponent3D = GetComponent<RayPerceptionSensorComponent3D>();
+
+        var rayOutputs = RayPerceptionSensor.Perceive(m_rayPerceptionSensorComponent3D.GetRayPerceptionInput(), false).RayOutputs;
+        int lengthOfRayOutputs = rayOutputs.Length;
+
+        // Alternating Ray Order: it gives an order of
+        // (0, -delta, delta, -2delta, 2delta, ..., -ndelta, ndelta)
+        // index 0 indicates the center of raycasts
+        for (int i = 0; i < lengthOfRayOutputs; i++)
+        {
+            GameObject goHit = rayOutputs[i].HitGameObject;
+            if (goHit != null)
+            {
+                var rayDirection = rayOutputs[i].EndPositionWorld - rayOutputs[i].StartPositionWorld;
+                var scaledRayLength = rayDirection.magnitude;
+                float rayHitDistance = rayOutputs[i].HitFraction * scaledRayLength;
+
+                // Print info:
+                string dispStr = "";
+                dispStr = dispStr + "__RayPerceptionSensor - HitInfo__:\r\n";
+                dispStr = dispStr + "GameObject name: " + goHit.name + "\r\n";
+                dispStr = dispStr + "Hit distance of Ray: " + rayHitDistance + "\r\n";
+                dispStr = dispStr + "GameObject tag: " + goHit.tag + "\r\n";
+                Debug.Log(dispStr);
+            }
+        }
+    }
+
+    private void Update()
+    {
+        CheckRayCast();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -174,9 +189,9 @@ public class DroneAgent : Agent
 
     private void SetDroneRandomPosition()
     {
-        float xPos = UnityEngine.Random.Range(-1.25f, 6.25f);
-        float zPos = UnityEngine.Random.Range(0.57f, 4f);
-        float altitude = UnityEngine.Random.Range(0.3f, 2.5f);
+        float xPos = UnityEngine.Random.Range(-6.25f, 11.25f);
+        float zPos = UnityEngine.Random.Range(-4.2f, -1.4f);
+        float altitude = UnityEngine.Random.Range(0.3f, 2.65f);
         transform.localPosition = new Vector3(xPos, altitude, zPos);
         droneController.SetAltitude(altitude);
     }
@@ -184,7 +199,9 @@ public class DroneAgent : Agent
     private void OnGoalAchived()
     {
         Debug.Log("Enemy hit");
+        Instantiate(explosionVFX, transform.position, Quaternion.identity);
         SetReward(1f);
+        //HandleRandomObstacleSpawn();
         EndEpisode();
     }
 }
