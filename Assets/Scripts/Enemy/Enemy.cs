@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float speed = 1f;
     [SerializeField] private bool randomizeSpeed;
+    [SerializeField] private BoxCollider spawnZoneCollider;
     [SerializeField] private List<Transform> waypoints;
 
     private float randomSpeed = 1f;
@@ -60,8 +61,12 @@ public class Enemy : MonoBehaviour
 
     private void RandomizePosition()
     {
-        float xPos = Random.Range(-6.3f, 11.35f);
-        float zPos = Random.Range(17f, 20.3f);
-        //transform.localPosition = new Vector3(xPos, 1f, zPos);
+        Bounds bounds = spawnZoneCollider.bounds;
+        Vector3 randomPosition = new Vector3(
+            Random.Range(bounds.min.x, bounds.max.x), 1f,
+            Random.Range(bounds.min.z, bounds.max.z)
+        );
+
+        transform.position = randomPosition;
     }
 }

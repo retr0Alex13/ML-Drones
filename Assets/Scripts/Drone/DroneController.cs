@@ -3,9 +3,13 @@ using UnityEngine;
 public class DroneController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float ascendSpeed = 5f;
     [SerializeField] private float descendSpeed = 3f;
+
+
+    [Header("Rotation Settings")]
+    [SerializeField] private float yawSpeed = 100f;
+    [SerializeField] private float rotationSmoothness = 0.1f;
 
     [Space(10)]
 
@@ -21,6 +25,7 @@ public class DroneController : MonoBehaviour
     [SerializeField] private float pitchIntensity = 10f;
     [SerializeField] private float stabilizationSpeed = 5f;
 
+
     private Rigidbody rb;
     private float targetAltitude;
     private float currentSpeed;
@@ -28,6 +33,7 @@ public class DroneController : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     private float altitudeInput;
+    private float smoothedYawInput;
 
     private void Awake()
     {
@@ -38,24 +44,32 @@ public class DroneController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        BasicMovement();
-        Rotate();
+        HandleRotation();
+        HandleMovement();
         Lean();
         AltitudeControl();
         HandleSpeed();
     }
 
-    private void BasicMovement()
+    private void HandleMovement()
     {
-        Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-        Vector3 velocity = moveDirection * currentSpeed;
-        rb.AddRelativeForce(velocity);
+        // Calculate the movement direction in world space
+        Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+        moveDirection = Vector3.ClampMagnitude(moveDirection, 1f);
+
+        // Apply movement force
+        Vector3 movement = moveDirection * currentSpeed;
+        rb.AddForce(movement, ForceMode.Acceleration);
     }
 
-    private void Rotate()
+    private void HandleRotation()
     {
-        Vector3 rotation = new Vector3(-verticalInput, horizontalInput, 0f);
-        transform.Rotate(rotation, Space.Self);
+        // Smooth the yaw input
+        smoothedYawInput = Mathf.Lerp(smoothedYawInput, horizontalInput, 1f / rotationSmoothness);
+
+        // Apply yaw rotation
+        float yawRotation = smoothedYawInput * yawSpeed * Time.fixedDeltaTime;
+        transform.Rotate(Vector3.up * yawRotation, Space.World);
     }
 
 
@@ -83,18 +97,6 @@ public class DroneController : MonoBehaviour
         float altitudeError = targetAltitude - transform.position.y;
         float verticalVelocity = altitudeError * ascendSpeed + Mathf.Clamp(rb.velocity.y, -descendSpeed, 0);
         rb.velocity = new Vector3(rb.velocity.x, verticalVelocity, rb.velocity.z);
-    }
-
-    private void RotateLeftRight()
-    {
-        if (Input.GetKey(KeyCode.K))
-        {
-            transform.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime, Space.Self);
-        }
-        else if (Input.GetKey(KeyCode.L))
-        {
-            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
-        }
     }
 
     private void HandleSpeed()

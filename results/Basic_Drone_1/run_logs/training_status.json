@@ -1,0 +1,47 @@
+{
+    "FPV-Drone": {
+        "checkpoints": [
+            {
+                "steps": 499991,
+                "file_path": "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-499991.onnx",
+                "reward": null,
+                "creation_time": 1719600906.7307222,
+                "auxillary_file_paths": [
+                    "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-499991.pt"
+                ]
+            },
+            {
+                "steps": 999976,
+                "file_path": "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-999976.onnx",
+                "reward": 0.9271600097417831,
+                "creation_time": 1719601933.978674,
+                "auxillary_file_paths": [
+                    "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-999976.pt"
+                ]
+            },
+            {
+                "steps": 1022090,
+                "file_path": "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-1022090.onnx",
+                "reward": 0.7704380920955113,
+                "creation_time": 1719601977.1865044,
+                "auxillary_file_paths": [
+                    "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-1022090.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1022090,
+            "file_path": "results\\Basic_Drone_1\\FPV-Drone.onnx",
+            "reward": 0.7704380920955113,
+            "creation_time": 1719601977.1865044,
+            "auxillary_file_paths": [
+                "results\\Basic_Drone_1\\FPV-Drone\\FPV-Drone-1022090.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}
