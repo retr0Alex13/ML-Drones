@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float speed = 1f;
     [SerializeField] private bool randomizeSpeed;
-    [SerializeField] private BoxCollider spawnZoneCollider;
+    [SerializeField] private BoxCollider[] spawnZoneColliders;
     [SerializeField] private List<Transform> waypoints;
 
     private float randomSpeed = 1f;
@@ -61,6 +61,9 @@ public class Enemy : MonoBehaviour
 
     private void RandomizePosition()
     {
+        BoxCollider spawnZoneCollider = 
+            spawnZoneColliders[Random.Range(0, spawnZoneColliders.Length)];
+
         Bounds bounds = spawnZoneCollider.bounds;
         Vector3 randomPosition = new Vector3(
             Random.Range(bounds.min.x, bounds.max.x), 1f,

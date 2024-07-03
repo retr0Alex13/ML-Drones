@@ -1,8 +1,8 @@
 using System;
+using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using UnityEngine;
 
 public class DroneAgent : Agent
 {
@@ -11,11 +11,12 @@ public class DroneAgent : Agent
     [SerializeField]
     private GameObject explosionVFX;
 
+    [SerializeField] private BoxCollider spawnZoneCollider;
+
     private DroneController droneController;
     private Rigidbody droneRigidBody;
 
     private bool isTargetDetected;
-
     private Transform targetTransform;
 
     public override void Initialize()
@@ -187,7 +188,6 @@ public class DroneAgent : Agent
         transform.localRotation = Quaternion.identity;
         droneController.ResetSpeed();
 
-        targetTransform = null;
         isTargetDetected = false;
     }
 
@@ -199,11 +199,17 @@ public class DroneAgent : Agent
 
     private void SetDroneRandomPosition()
     {
-        float xPos = UnityEngine.Random.Range(-6.25f, 11.25f);
-        float zPos = UnityEngine.Random.Range(-4.2f, -1.4f);
-        float altitude = UnityEngine.Random.Range(0.3f, 2.65f);
-        transform.localPosition = new Vector3(0.5f, 0.7f, -3f);
-        droneController.SetAltitude(0.7f);
+        Bounds bounds = spawnZoneCollider.bounds;
+        Vector3 randomPosition = new Vector3(
+            UnityEngine.
+            Random.Range(bounds.min.x, bounds.max.x),
+            UnityEngine.
+            Random.Range(bounds.min.y, bounds.max.y),
+            UnityEngine.
+            Random.Range(bounds.min.z, bounds.max.z)
+        );
+        transform.position = randomPosition;
+        droneController.SetAltitude(randomPosition.y);
     }
 
     private void OnGoalAchived()
