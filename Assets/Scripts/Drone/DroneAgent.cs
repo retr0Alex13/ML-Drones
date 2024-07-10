@@ -183,11 +183,10 @@ public class DroneAgent : Agent
     private void ResetDrone()
     {
         ResetDroneVelocity();
-        SetDroneRandomPosition();
+        SetRandomPosition();
+        SetRandomRotation();
 
-        transform.localRotation = Quaternion.identity;
         droneController.ResetSpeed();
-
         isTargetDetected = false;
     }
 
@@ -197,7 +196,7 @@ public class DroneAgent : Agent
         droneRigidBody.angularVelocity = Vector3.zero;
     }
 
-    private void SetDroneRandomPosition()
+    private void SetRandomPosition()
     {
         Bounds bounds = spawnZoneCollider.bounds;
         Vector3 randomPosition = new Vector3(
@@ -218,5 +217,10 @@ public class DroneAgent : Agent
         Instantiate(explosionVFX, transform.position, Quaternion.identity);
         SetReward(1f);
         EndEpisode();
+    }
+    private void SetRandomRotation()
+    {
+        float randomRotation = UnityEngine.Random.Range(0f, 360f);
+        transform.rotation = Quaternion.Euler(0f, randomRotation, 0f);
     }
 }

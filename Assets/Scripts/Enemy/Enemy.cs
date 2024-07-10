@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     private void ResetEnemy()
     {
         RandomizePosition();
-        randomSpeed = Random.Range(5f, 30f);
+        randomSpeed = Random.Range(1f, 5f);
     }
 
     private void RandomizePosition()
@@ -55,7 +55,6 @@ public class Enemy : MonoBehaviour
             spawnZoneColliders[Random.Range(0, spawnZoneColliders.Length)];
 
         SetNewRandomTarget();
-
         transform.position = targetPosition;
     }
 
@@ -64,7 +63,7 @@ public class Enemy : MonoBehaviour
         Bounds localBounds = TransformBoundsToLocal(currentSpawnZone.bounds);
         Vector3 randomLocalPosition = new Vector3(
             Random.Range(localBounds.min.x, localBounds.max.x),
-            1f,
+            localBounds.min.y,
             Random.Range(localBounds.min.z, localBounds.max.z)
         );
 
