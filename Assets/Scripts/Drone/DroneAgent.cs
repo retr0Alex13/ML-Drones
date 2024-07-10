@@ -35,6 +35,7 @@ public class DroneAgent : Agent
     {
         if (isTargetDetected)
         {
+            Debug.Log("Enemy spotted!");
             sensor.AddObservation(targetTransform.localPosition);
         }
         sensor.AddObservation(transform.localPosition);
