@@ -6,11 +6,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private DroneAgent droneAgent;
 
     [SerializeField] private float speed = 1f;
+    [SerializeField, Range(1, 5)] private float maxEnemySpeed = 1f;
     [SerializeField] private bool randomizeSpeed;
     [SerializeField] private BoxCollider[] spawnZoneColliders;
     [SerializeField] private List<Transform> waypoints;
 
-    private float randomSpeed = 1f;
     private Vector3 targetPosition;
     private BoxCollider currentSpawnZone;
 
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        MoveTowardsTarget();
+        //MoveTowardsTarget();
     }
 
     private void MoveTowardsTarget()
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
         Vector3 currentLocalPosition = transform.localPosition;
         Vector3 targetLocalPosition = transform.parent.InverseTransformPoint(targetPosition);
 
-        float step = (randomizeSpeed ? randomSpeed : speed) * Time.deltaTime;
+        float step = (randomizeSpeed ? maxEnemySpeed : speed) * Time.deltaTime;
         transform.localPosition = Vector3.MoveTowards(currentLocalPosition, targetLocalPosition, step);
 
         if (Vector3.Distance(currentLocalPosition, targetLocalPosition) < 0.001f)
@@ -45,17 +45,24 @@ public class Enemy : MonoBehaviour
 
     private void ResetEnemy()
     {
-        RandomizePosition();
-        randomSpeed = Random.Range(1f, 5f);
+        SetRandomPosition();
+        SetRandomRotation();
+        maxEnemySpeed = Random.Range(1f, 5f);
     }
 
-    private void RandomizePosition()
+    private void SetRandomPosition()
     {
          currentSpawnZone = 
             spawnZoneColliders[Random.Range(0, spawnZoneColliders.Length)];
 
         SetNewRandomTarget();
         transform.position = targetPosition;
+    }
+
+    private void SetRandomRotation()
+    {
+        float randomRotation = UnityEngine.Random.Range(0f, 360f);
+        transform.rotation = Quaternion.Euler(0f, randomRotation, 0f);
     }
 
     private void SetNewRandomTarget()
