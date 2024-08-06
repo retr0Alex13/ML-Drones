@@ -185,7 +185,8 @@ public class DroneAgent : Agent
     {
         ResetDroneVelocity();
         SetRandomPosition();
-        SetRandomRotation();
+        //SetRandomRotation();
+        transform.localRotation = Quaternion.identity;
 
         droneController.ResetSpeed();
         isTargetDetected = false;

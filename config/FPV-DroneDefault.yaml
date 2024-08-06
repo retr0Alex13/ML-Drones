@@ -19,13 +19,6 @@ behaviors:
       extrinsic:
         gamma: 0.99     # (default = 0.99) Typical range: 0.8 - 0.995. 0.8 - 0.995 In situations when the agent should be acting in the present in order to prepare for rewards in the distant future, this value should be large. In cases when rewards are more immediate, it can be smaller. Must be strictly smaller than 1.
         strength: 1.0
-      rnd:
-        gamma: 0.99     # (default = 0.99) Typical range: 0.8 - 0.995. Discount factor for future rewards.
-        strength: 0.001     # (default = 1.0) Typical range: 0.001 - 0.01. This should be scaled in order to ensure it is large enough to not be overwhelmed by extrinsic reward signals in the environment. Likewise it should not be too large to overwhelm the extrinsic reward signal.
-        network_settings:
-          hidden_units: 64
-          num_layers: 3
-        learning_rate: 0.0003   # (default = 3e-4). Typical range: 1e-5 - 1e-3. This should be large enough for the RND module to quickly learn the state representation, but small enough to allow for stable learning.
     keep_checkpoints: 5
     max_steps: 10000000
     time_horizon: 256   # (default = 64) Typical range: 32 - 2048. This number should be large enough to capture all the important behavior within a sequence of an agent's actions.
