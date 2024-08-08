@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     [SerializeField, Range(1, 5)] private float maxEnemySpeed = 1f;
     [SerializeField] private bool randomizeSpeed;
     [SerializeField] private BoxCollider[] spawnZoneColliders;
-    [SerializeField] private List<Transform> waypoints;
 
     private Vector3 targetPosition;
     private BoxCollider currentSpawnZone;
@@ -26,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        //MoveTowardsTarget();
+        MoveTowardsTarget();
     }
 
     private void MoveTowardsTarget()

@@ -1,0 +1,65 @@
+{
+    "FPV-Drone": {
+        "checkpoints": [
+            {
+                "steps": 1499939,
+                "file_path": "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-1499939.onnx",
+                "reward": 0.9588823563912335,
+                "creation_time": 1723055977.3075647,
+                "auxillary_file_paths": [
+                    "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-1499939.pt"
+                ]
+            },
+            {
+                "steps": 1565217,
+                "file_path": "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-1565217.onnx",
+                "reward": 0.9578499972820282,
+                "creation_time": 1723056088.3377168,
+                "auxillary_file_paths": [
+                    "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-1565217.pt"
+                ]
+            },
+            {
+                "steps": 1999983,
+                "file_path": "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-1999983.onnx",
+                "reward": 0.9583818208087574,
+                "creation_time": 1723056842.1161861,
+                "auxillary_file_paths": [
+                    "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-1999983.pt"
+                ]
+            },
+            {
+                "steps": 2499981,
+                "file_path": "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-2499981.onnx",
+                "reward": 0.9592000246047974,
+                "creation_time": 1723057672.1778421,
+                "auxillary_file_paths": [
+                    "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-2499981.pt"
+                ]
+            },
+            {
+                "steps": 2868175,
+                "file_path": "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-2868175.onnx",
+                "reward": 0.95781052426288,
+                "creation_time": 1723058292.5836678,
+                "auxillary_file_paths": [
+                    "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-2868175.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2868175,
+            "file_path": "results\\FPV-Drone_2\\FPV-Drone.onnx",
+            "reward": 0.95781052426288,
+            "creation_time": 1723058292.5836678,
+            "auxillary_file_paths": [
+                "results\\FPV-Drone_2\\FPV-Drone\\FPV-Drone-2868175.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}
