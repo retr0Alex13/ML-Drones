@@ -6,10 +6,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private DroneAgent droneAgent;
 
     [SerializeField] private float speed = 1f;
-    [SerializeField, Range(1, 5)] private float maxEnemySpeed = 1f;
+    [SerializeField, Range(3, 5)] private float maxEnemySpeed = 4f;
     [SerializeField] private bool randomizeSpeed;
     [SerializeField] private BoxCollider[] spawnZoneColliders;
 
+    private float randomMovingSpeed;
     private Vector3 targetPosition;
     private BoxCollider currentSpawnZone;
 
@@ -33,7 +34,7 @@ public class Enemy : MonoBehaviour
         Vector3 currentLocalPosition = transform.localPosition;
         Vector3 targetLocalPosition = transform.parent.InverseTransformPoint(targetPosition);
 
-        float step = (randomizeSpeed ? maxEnemySpeed : speed) * Time.deltaTime;
+        float step = (randomizeSpeed ? randomMovingSpeed : speed) * Time.deltaTime;
         transform.localPosition = Vector3.MoveTowards(currentLocalPosition, targetLocalPosition, step);
 
         if (Vector3.Distance(currentLocalPosition, targetLocalPosition) < 0.001f)
@@ -46,7 +47,8 @@ public class Enemy : MonoBehaviour
     {
         SetRandomPosition();
         SetRandomRotation();
-        maxEnemySpeed = Random.Range(1f, 5f);
+
+        randomMovingSpeed = Random.Range(speed, maxEnemySpeed);
     }
 
     private void SetRandomPosition()
