@@ -19,6 +19,8 @@ public class LessonsController : MonoBehaviour
     {
         obstacles = new List<GameObject>();
         agent.OnNewEpisode += StartLesson;
+
+        StartLesson();
     }
 
     private void Update()

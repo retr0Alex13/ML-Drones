@@ -1,18 +1,20 @@
 using System.Collections.Generic;
+using Unity.MLAgents;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private DroneAgent droneAgent;
 
+    [SerializeField] private bool moveEnemy;
+    [SerializeField] private bool randomizeSpeed;
     [SerializeField] private float speed = 1f;
     [SerializeField, Range(3, 5)] private float maxEnemySpeed = 4f;
-    [SerializeField] private bool randomizeSpeed;
-    [SerializeField] private BoxCollider[] spawnZoneColliders;
+
+    private BoxCollider spawnZoneCollider;
 
     private float randomMovingSpeed;
     private Vector3 targetPosition;
-    private BoxCollider currentSpawnZone;
 
     private void Awake()
     {
@@ -26,7 +28,10 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        MoveTowardsTarget();
+        if (moveEnemy)
+        {
+            MoveTowardsTarget();
+        }
     }
 
     private void MoveTowardsTarget()
@@ -47,28 +52,37 @@ public class Enemy : MonoBehaviour
     {
         SetRandomPosition();
         SetRandomRotation();
-
+        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 1)
+        {
+            moveEnemy = true;
+        }
+        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 2)
+        {
+            randomizeSpeed = true;
+        }
         randomMovingSpeed = Random.Range(speed, maxEnemySpeed);
+    }
+
+    public void SetSpawnZoneCollider(BoxCollider spawnZone)
+    {
+        spawnZoneCollider = spawnZone;
     }
 
     private void SetRandomPosition()
     {
-         currentSpawnZone = 
-            spawnZoneColliders[Random.Range(0, spawnZoneColliders.Length)];
-
         SetNewRandomTarget();
         transform.position = targetPosition;
     }
 
     private void SetRandomRotation()
     {
-        float randomRotation = UnityEngine.Random.Range(0f, 360f);
+        float randomRotation = Random.Range(0f, 360f);
         transform.rotation = Quaternion.Euler(0f, randomRotation, 0f);
     }
 
     private void SetNewRandomTarget()
     {
-        Bounds localBounds = TransformBoundsToLocal(currentSpawnZone.bounds);
+        Bounds localBounds = TransformBoundsToLocal(spawnZoneCollider.bounds);
         Vector3 randomLocalPosition = new Vector3(
             Random.Range(localBounds.min.x, localBounds.max.x),
             localBounds.min.y,
