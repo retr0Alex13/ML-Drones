@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
 
+[DefaultExecutionOrder(-1)]
 public class LessonsController : MonoBehaviour
 {
     [SerializeField] private DroneAgent agent;
-    [SerializeField] private Enemy enemy;
+    [SerializeField] private Enemy[] enemies;
 
     [SerializeField] private int defaultLesson = 0;
 
@@ -15,11 +16,16 @@ public class LessonsController : MonoBehaviour
     private Lesson currentLesson;
     private int currentLessonIndex;
 
-    private void Start()
+    private Enemy selectedEnemy;
+
+    private void Awake()
     {
         obstacles = new List<GameObject>();
         agent.OnNewEpisode += StartLesson;
+    }
 
+    private void Start()
+    {
         StartLesson();
     }
 
@@ -41,13 +47,37 @@ public class LessonsController : MonoBehaviour
         agent.OnNewEpisode -= StartLesson;
     }
 
+    private void SelectRandomEnemy()
+    {
+        if (selectedEnemy != null)
+        {
+            Destroy(selectedEnemy.gameObject);
+        }
+
+        int enemyIndex = Random.Range(0, enemies.Length);
+        selectedEnemy = enemies[enemyIndex];
+    }
+
     private void StartLesson()
+    {
+        SelectRandomEnemy();
+        SpawnEnemy();
+
+        SetCurrentLesson();
+        SetSpawnPoints();
+        ActivateObstacles();
+    }
+
+    private void SetCurrentLesson()
     {
         currentLessonIndex = GetLessonIndex();
         currentLesson = lessons[currentLessonIndex];
+    }
 
-        SetSpawnPoints();
-        ActivateObstacles();
+    private void SpawnEnemy()
+    {
+        selectedEnemy = Instantiate(selectedEnemy, transform);
+        selectedEnemy.DroneAgent = agent;
     }
 
     private int GetLessonIndex()
@@ -58,7 +88,7 @@ public class LessonsController : MonoBehaviour
     private void SetSpawnPoints()
     {
         agent.SetSpawnZoneCollider(currentLesson.GetRandomSpawnPoint(currentLesson.AgentSpawnPoints));
-        enemy.SetSpawnZoneCollider(currentLesson.GetRandomSpawnPoint(currentLesson.EnemySpawnPoints));
+        selectedEnemy.SetSpawnZoneCollider(currentLesson.GetRandomSpawnPoint(currentLesson.EnemySpawnPoints));
     }
 
     private void ActivateObstacles()

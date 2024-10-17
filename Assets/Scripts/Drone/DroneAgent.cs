@@ -11,7 +11,7 @@ public class DroneAgent : Agent
     [SerializeField]
     private GameObject explosionVFX;
 
-    [SerializeField] private bool randomizeDroneRotation;
+    private bool randomizeDroneRotation;
 
     private BoxCollider spawnZoneCollider;
 
@@ -177,7 +177,7 @@ public class DroneAgent : Agent
         }
         else
         {
-            Debug.Log("No hit on enemy");
+            Debug.Log("Crashed!");
             SetReward(-1f);
             EndEpisode();
         }
@@ -187,13 +187,23 @@ public class DroneAgent : Agent
     {
         ResetDroneVelocity();
         SetRandomPosition();
-        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 1 || randomizeDroneRotation)
+
+        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 0)
         {
-            SetRandomRotation();
+            int randomValue = UnityEngine.Random.Range(0, 2);
+
+            if (randomValue > 0)
+            {
+                SetRandomRotation();
+            }
+            else
+            {
+                transform.localRotation = Quaternion.identity;
+            }
         }
         else
         {
-            transform.localRotation = Quaternion.identity;
+            transform.rotation = Quaternion.Euler(0f, -180f, 0f);
         }
 
         droneController.ResetSpeed();

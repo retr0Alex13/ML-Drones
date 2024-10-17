@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private DroneAgent droneAgent;
+    [field: SerializeField] public DroneAgent DroneAgent { get; set; }
 
     [SerializeField] private bool moveEnemy;
     [SerializeField] private bool randomizeSpeed;
-    [SerializeField] private float speed = 1f;
-    [SerializeField, Range(3, 5)] private float maxEnemySpeed = 4f;
+    [SerializeField] private float defaultSpeed = 1f;
+    [SerializeField] private float maxSpeed = 5f;
 
     private BoxCollider spawnZoneCollider;
 
-    private float randomMovingSpeed;
     private Vector3 targetPosition;
 
-    private void Awake()
+    private void Start()
     {
-        droneAgent.OnNewEpisode += ResetEnemy;
+        DroneAgent.OnNewEpisode += ResetEnemy;
     }
 
     private void OnDestroy()
     {
-        droneAgent.OnNewEpisode -= ResetEnemy;
+        DroneAgent.OnNewEpisode -= ResetEnemy;
     }
 
     private void Update()
@@ -38,8 +37,9 @@ public class Enemy : MonoBehaviour
     {
         Vector3 currentLocalPosition = transform.localPosition;
         Vector3 targetLocalPosition = transform.parent.InverseTransformPoint(targetPosition);
+        float moveSpeed = Random.Range(defaultSpeed, maxSpeed);
 
-        float step = (randomizeSpeed ? randomMovingSpeed : speed) * Time.deltaTime;
+        float step = (randomizeSpeed ? moveSpeed : defaultSpeed) * Time.deltaTime;
         transform.localPosition = Vector3.MoveTowards(currentLocalPosition, targetLocalPosition, step);
 
         if (Vector3.Distance(currentLocalPosition, targetLocalPosition) < 0.001f)
@@ -52,20 +52,12 @@ public class Enemy : MonoBehaviour
     {
         SetRandomPosition();
         SetRandomRotation();
-        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 1)
-        {
-            moveEnemy = true;
-        }
-        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 2)
-        {
-            randomizeSpeed = true;
-        }
-        randomMovingSpeed = Random.Range(speed, maxEnemySpeed);
     }
 
     public void SetSpawnZoneCollider(BoxCollider spawnZone)
     {
         spawnZoneCollider = spawnZone;
+        SetRandomPosition();
     }
 
     private void SetRandomPosition()

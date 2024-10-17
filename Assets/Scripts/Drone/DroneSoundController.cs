@@ -26,7 +26,7 @@ public class DroneSoundController : MonoBehaviour
 
         // Smoothly change the pitch of the audio source
         float currentPitch = audioSource.pitch;
-        float pitchChangeSpeed = 1f; // Adjust this value to control the speed of pitch change
+        float pitchChangeSpeed = 1f; // Adjust this value to control the defaultSpeed of pitch change
         
         // Smoothly change the pitch of the audio source
         audioSource.pitch = Mathf.Lerp(currentPitch, targetPitch, Time.deltaTime * pitchChangeSpeed);
