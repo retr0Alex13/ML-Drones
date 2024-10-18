@@ -60,10 +60,11 @@ public class LessonsController : MonoBehaviour
 
     private void StartLesson()
     {
+        SetCurrentLesson();
+
         SelectRandomEnemy();
         SpawnEnemy();
 
-        SetCurrentLesson();
         SetSpawnPoints();
         ActivateObstacles();
     }
@@ -78,6 +79,7 @@ public class LessonsController : MonoBehaviour
     {
         selectedEnemy = Instantiate(selectedEnemy, transform);
         selectedEnemy.DroneAgent = agent;
+        selectedEnemy.MoveBetweenWaypoints.waypoints = currentLesson.Waypoints.ToArray();
     }
 
     private int GetLessonIndex()
@@ -95,11 +97,11 @@ public class LessonsController : MonoBehaviour
     {
         DeactivateAllObstacles();
 
-        int obstaclesCount = currentLesson.Obstacles.Length;
+        int obstaclesCount = currentLesson.Walls.Length;
 
         for (int i = 0; i < obstaclesCount; i++)
         {
-            GameObject obstacle = currentLesson.Obstacles[i];
+            GameObject obstacle = currentLesson.Walls[i];
             obstacle.SetActive(true);
             obstacles.Add(obstacle);
         }
