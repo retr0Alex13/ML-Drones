@@ -557,8 +557,6 @@ MonoBehaviour:
   MaxStep: 5000
   explosionVFX: {fileID: 1804206099813350, guid: 4dd02b5f854b6c84990fbeb810abffe4,
     type: 3}
-  randomRotation: 1
-  spawnZoneCollider: {fileID: 0}
 --- !u!114 &4284143857389018336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,7 +622,7 @@ MonoBehaviour:
   m_RaysPerDirection: 4
   m_MaxRayDegrees: 70
   m_SphereCastRadius: 0.5
-  m_RayLength: 40
+  m_RayLength: 150
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 51
@@ -654,7 +652,7 @@ MonoBehaviour:
   m_RaysPerDirection: 4
   m_MaxRayDegrees: 65
   m_SphereCastRadius: 0.5
-  m_RayLength: 40
+  m_RayLength: 150
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967227
@@ -684,7 +682,7 @@ MonoBehaviour:
   m_RaysPerDirection: 4
   m_MaxRayDegrees: 75
   m_SphereCastRadius: 0.5
-  m_RayLength: 40
+  m_RayLength: 150
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
@@ -714,7 +712,7 @@ MonoBehaviour:
   m_RaysPerDirection: 1
   m_MaxRayDegrees: 100
   m_SphereCastRadius: 0.5
-  m_RayLength: 10
+  m_RayLength: 25
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
@@ -744,7 +742,7 @@ MonoBehaviour:
   m_RaysPerDirection: 1
   m_MaxRayDegrees: 100
   m_SphereCastRadius: 0.5
-  m_RayLength: 10
+  m_RayLength: 25
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291

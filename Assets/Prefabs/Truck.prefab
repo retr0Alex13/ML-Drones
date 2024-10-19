@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 7101448759159435472}
   - component: {fileID: 3977114362215173183}
   - component: {fileID: 6855615141707084322}
+  - component: {fileID: -2031984321103184225}
   m_Layer: 0
   m_Name: Truck
   m_TagString: enemy
@@ -571,11 +572,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f577bc7786ad2c640b92f4acbf48f0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  droneAgent: {fileID: 0}
+  MoveBetweenWaypoints: {fileID: 0}
   moveEnemy: 0
-  randomizeSpeed: 0
-  defaultSpeed: 1
-  maxSpeed: 5
+  <DroneAgent>k__BackingField: {fileID: 0}
+--- !u!114 &-2031984321103184225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7148782375761104415}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e370b6dc07a8d41af6fb96f5673b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
+  speed: 2
+  reachThreshold: 0.1
+  rotationSpeed: 5
 --- !u!1 &7667370565013793522
 GameObject:
   m_ObjectHideFlags: 0
