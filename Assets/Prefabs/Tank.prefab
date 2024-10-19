@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 933155303215086527}
   - component: {fileID: 4333033384455894790}
   - component: {fileID: 8493390413725101395}
+  - component: {fileID: -3148822932393516873}
   m_Layer: 0
   m_Name: Tank
   m_TagString: enemy
@@ -298,11 +299,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f577bc7786ad2c640b92f4acbf48f0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  droneAgent: {fileID: 0}
+  MoveBetweenWaypoints: {fileID: 0}
   moveEnemy: 0
-  randomizeSpeed: 0
-  speed: 1
-  maxEnemySpeed: 4
+  <DroneAgent>k__BackingField: {fileID: 0}
 --- !u!65 &8493390413725101395
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -324,6 +323,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.7518797, y: 4.787145, z: 11.994726}
   m_Center: {x: 0, y: 2.3713038, z: 0}
+--- !u!114 &-3148822932393516873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831762160848742043}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e370b6dc07a8d41af6fb96f5673b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
+  speed: 2
+  reachThreshold: 0.1
+  rotationSpeed: 5
 --- !u!1 &8679522883979627228
 GameObject:
   m_ObjectHideFlags: 0
