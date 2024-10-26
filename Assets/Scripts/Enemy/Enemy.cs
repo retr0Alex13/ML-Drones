@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using Unity.MLAgents;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     public MoveBetweenWaypoints MoveBetweenWaypoints;
-    [SerializeField] private bool moveEnemy;
 
     [field: SerializeField] public DroneAgent DroneAgent { get; set; }
 
@@ -21,8 +18,6 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         DroneAgent.OnNewEpisode += ResetEnemy;
-
-        SetMovementState();
     }
 
     private void OnDestroy()
@@ -33,28 +28,15 @@ public class Enemy : MonoBehaviour
     private void ResetEnemy()
     {
         SetRandomPosition();
-
-        SetRandomRotation();
-
-        SetMovementState();
     }
-
-    private void SetMovementState()
+    private void SetRandomPosition()
     {
-        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) <= 0)
+        CreateRandomPoint();
+        if (MoveBetweenWaypoints.enabled)
         {
             return;
         }
-        else
-        {
-            int randomNum = Random.Range(0, 2);
-            moveEnemy = randomNum > 0 ? true : false;
-
-            if (moveEnemy)
-            {
-                MoveBetweenWaypoints.enabled = true;
-            }
-        }
+        transform.position = targetPosition;
     }
 
     public void SetSpawnZoneCollider(BoxCollider spawnZone)
@@ -63,13 +45,7 @@ public class Enemy : MonoBehaviour
         SetRandomPosition();
     }
 
-    private void SetRandomPosition()
-    {
-        CreateRandomPoint();
-        transform.position = targetPosition;
-    }
-
-    private void SetRandomRotation()
+    public void SetRandomRotation()
     {
         float randomRotation = Random.Range(0f, 360f);
         transform.rotation = Quaternion.Euler(0f, randomRotation, 0f);

@@ -188,26 +188,24 @@ public class DroneAgent : Agent
         ResetDroneVelocity();
         SetRandomPosition();
 
-        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) > 0)
-        {
-            int randomValue = UnityEngine.Random.Range(0, 2);
+        droneController.ResetSpeed();
+        isTargetDetected = false;
 
-            if (randomValue > 0)
-            {
-                SetRandomRotation();
-            }
-            else
-            {
-                transform.localRotation = Quaternion.identity;
-            }
+        if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) <= 0)
+        {
+            return;
+        }
+
+        int randomValue = UnityEngine.Random.Range(0, 2);
+
+        if (randomValue > 0)
+        {
+            SetRandomRotation();
         }
         else
         {
             transform.rotation = Quaternion.Euler(0f, 90f, 0f);
         }
-
-        droneController.ResetSpeed();
-        isTargetDetected = false;
     }
 
     private void ResetDroneVelocity()

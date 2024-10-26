@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [System.Serializable]
 public class Lesson
@@ -9,7 +8,7 @@ public class Lesson
     public BoxCollider[] EnemySpawnPoints;
     public List<Transform> Waypoints;
 
-    public GameObject[] Walls;
+    public GameObject[] Bounds;
     public GameObject[] RandmoizedObstacles;
 
     public BoxCollider GetRandomSpawnPoint(BoxCollider[] spawnPoint)

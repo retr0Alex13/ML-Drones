@@ -31,15 +31,17 @@ public class LessonsController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            if (defaultLesson + 1 > lessons.Length)
-            {
-                defaultLesson = 0;
-            }
-            defaultLesson = defaultLesson + 1;
             agent.EndEpisode();
         }
+    }
+
+    [ContextMenu("Next Lesson")]
+    public void NextLesson()
+    {
+        defaultLesson = (defaultLesson + 1) % lessons.Length;
+        agent.EndEpisode();
     }
 
     private void OnDestroy()
@@ -80,6 +82,26 @@ public class LessonsController : MonoBehaviour
         selectedEnemy = Instantiate(selectedEnemy, transform);
         selectedEnemy.DroneAgent = agent;
         selectedEnemy.MoveBetweenWaypoints.waypoints = currentLesson.Waypoints.ToArray();
+        selectedEnemy.SetRandomRotation();
+        SetEnemyMovementState();
+    }
+
+    private void SetEnemyMovementState()
+    {
+        if (GetLessonIndex() <= 0)
+        {
+            return;
+        }
+
+        int randomValue = Random.Range(0, 2);
+
+        if (randomValue <= 0)
+        {
+            return;
+        }
+        MoveBetweenWaypoints enemyMoving = selectedEnemy.MoveBetweenWaypoints;
+        enemyMoving.enabled = true;
+        enemyMoving.RandomizeSpeed();
     }
 
     private int GetLessonIndex()
@@ -97,11 +119,11 @@ public class LessonsController : MonoBehaviour
     {
         DeactivateAllObstacles();
 
-        int obstaclesCount = currentLesson.Walls.Length;
+        int obstaclesCount = currentLesson.Bounds.Length;
 
         for (int i = 0; i < obstaclesCount; i++)
         {
-            GameObject obstacle = currentLesson.Walls[i];
+            GameObject obstacle = currentLesson.Bounds[i];
             obstacle.SetActive(true);
             obstacles.Add(obstacle);
         }
