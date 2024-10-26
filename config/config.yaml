@@ -35,11 +35,11 @@ environment_parameters:
     curriculum:
       - name: Lesson0
         completion_criteria:
-          measure: progress
+          measure: reward
           behavior: FPV-Drone
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 0.1
+          threshold: 0.9
         value: 0.0
       - name: Lesson1
         completion_criteria:
@@ -47,7 +47,7 @@ environment_parameters:
           behavior: FPV-Drone
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 0.3
+          threshold: 0.1
           require_reset: true
         value: 1.0
       - name: Lesson2
@@ -56,8 +56,17 @@ environment_parameters:
           behavior: FPV-Drone
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 0.5
+          threshold: 0.3
           require_reset: true
         value: 2.0
       - name: Lesson3
+        completion_criteria:
+          measure: progress
+          behavior: FPV-Drone
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 0.6
+          require_reset: true
         value: 3.0
+      - name: Lesson4
+        value: 4.0
