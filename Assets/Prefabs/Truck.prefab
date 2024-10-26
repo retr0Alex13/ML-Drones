@@ -573,7 +573,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveBetweenWaypoints: {fileID: 0}
-  moveEnemy: 0
   <DroneAgent>k__BackingField: {fileID: 0}
 --- !u!114 &-2031984321103184225
 MonoBehaviour:
@@ -588,7 +587,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
-  speed: 2
+  defaultSpeed: 8
+  maxSpeed: 10
   reachThreshold: 0.1
   rotationSpeed: 5
 --- !u!1 &7667370565013793522

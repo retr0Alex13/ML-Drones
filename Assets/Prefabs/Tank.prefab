@@ -336,9 +336,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
-  speed: 2
+  defaultSpeed: 2
+  maxSpeed: 4
   reachThreshold: 0.1
-  rotationSpeed: 5
+  rotationSpeed: 4
 --- !u!1 &8679522883979627228
 GameObject:
   m_ObjectHideFlags: 0
