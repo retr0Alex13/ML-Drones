@@ -1,0 +1,68 @@
+{
+    "Lesson": {
+        "lesson_num": 4
+    },
+    "FPV-Drone": {
+        "checkpoints": [
+            {
+                "steps": 18499896,
+                "file_path": "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-18499896.onnx",
+                "reward": 0.14560005813837051,
+                "creation_time": 1731491648.927777,
+                "auxillary_file_paths": [
+                    "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-18499896.pt"
+                ]
+            },
+            {
+                "steps": 18999924,
+                "file_path": "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-18999924.onnx",
+                "reward": null,
+                "creation_time": 1731493933.2828298,
+                "auxillary_file_paths": [
+                    "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-18999924.pt"
+                ]
+            },
+            {
+                "steps": 19499875,
+                "file_path": "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-19499875.onnx",
+                "reward": null,
+                "creation_time": 1731496186.3349433,
+                "auxillary_file_paths": [
+                    "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-19499875.pt"
+                ]
+            },
+            {
+                "steps": 19999886,
+                "file_path": "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-19999886.onnx",
+                "reward": null,
+                "creation_time": 1731498474.3279953,
+                "auxillary_file_paths": [
+                    "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-19999886.pt"
+                ]
+            },
+            {
+                "steps": 20000014,
+                "file_path": "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-20000014.onnx",
+                "reward": null,
+                "creation_time": 1731498474.4510927,
+                "auxillary_file_paths": [
+                    "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-20000014.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 20000014,
+            "file_path": "results\\City_Drone_SAC_v1\\FPV-Drone.onnx",
+            "reward": null,
+            "creation_time": 1731498474.4510927,
+            "auxillary_file_paths": [
+                "results\\City_Drone_SAC_v1\\FPV-Drone\\FPV-Drone-20000014.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}

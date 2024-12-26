@@ -1,3 +1,5 @@
+using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
@@ -11,6 +13,7 @@ public class LessonsController : MonoBehaviour
     [SerializeField] private int defaultLesson = 0;
 
     private List<GameObject> obstacles;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     [SerializeField] private Lesson[] lessons;
     private Lesson currentLesson;
@@ -22,6 +25,7 @@ public class LessonsController : MonoBehaviour
     {
         obstacles = new List<GameObject>();
         agent.OnNewEpisode += StartLesson;
+        agent.OnEpisodeEnd += HandeDroneCrash;
     }
 
     private void Start()
@@ -37,6 +41,26 @@ public class LessonsController : MonoBehaviour
         }
     }
 
+    public void HandeDroneCrash()
+    {
+        StartCoroutine(ToggleDrone());
+    }
+
+    private IEnumerator ToggleDrone()
+    {
+        //virtualCamera.Follow = selectedEnemy.gameObject.transform;
+        //virtualCamera.LookAt = selectedEnemy.gameObject.transform;
+        agent.gameObject.SetActive(false);
+
+
+        yield return new WaitForSeconds(2f);
+
+        agent.EndEpisode();
+        agent.gameObject.SetActive(true);
+        //virtualCamera.Follow = agent.gameObject.transform;
+        //virtualCamera.LookAt = agent.gameObject.transform;
+    }
+
     [ContextMenu("Next Lesson")]
     public void NextLesson()
     {
@@ -47,6 +71,7 @@ public class LessonsController : MonoBehaviour
     private void OnDestroy()
     {
         agent.OnNewEpisode -= StartLesson;
+        agent.OnEpisodeEnd -= HandeDroneCrash;
     }
 
     private void SelectRandomEnemy()
@@ -54,6 +79,7 @@ public class LessonsController : MonoBehaviour
         if (selectedEnemy != null)
         {
             Destroy(selectedEnemy.gameObject);
+            selectedEnemy = null;
         }
 
         int enemyIndex = Random.Range(0, enemies.Length);
@@ -129,7 +155,8 @@ public class LessonsController : MonoBehaviour
         }
 
         // Optionally activate randomized obstacles
-        int randomizedObstaclesCount = Random.Range(0, currentLesson.RandmoizedObstacles.Length + 1);
+        // int randomizedObstaclesCount = Random.Range(0, currentLesson.RandmoizedObstacles.Length + 1);
+        int randomizedObstaclesCount = currentLesson.RandmoizedObstacles.Length + 1;
 
         for (int i = 0; i < randomizedObstaclesCount; i++)
         {

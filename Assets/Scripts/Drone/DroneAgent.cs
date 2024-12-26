@@ -7,6 +7,7 @@ using Unity.MLAgents.Sensors;
 public class DroneAgent : Agent
 {
     public event Action OnNewEpisode;
+    public event Action OnEpisodeEnd;
 
     [SerializeField]
     private GameObject explosionVFX;
@@ -27,6 +28,17 @@ public class DroneAgent : Agent
         droneRigidBody = GetComponent<Rigidbody>();
     }
 
+    void Start()
+    {
+        if (ModelController.modelAsset == null)
+        {
+            Debug.LogError("Model asset is null");
+        }
+        Debug.Log("Model has been set " + ModelController.modelAsset.name);
+        SetModel("FPV-Drone", ModelController.modelAsset);
+        Debug.Log("Model has been set " + ModelController.modelAsset.name);
+    }
+
     public override void OnEpisodeBegin()
     {
         ResetDrone();
@@ -35,9 +47,9 @@ public class DroneAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        if (isTargetDetected)
+        if (isTargetDetected && targetTransform != null)
         {
-            Debug.Log("Enemy spotted!");
+            //Debug.Log("Enemy spotted!");
             sensor.AddObservation(targetTransform.localPosition);
         }
         sensor.AddObservation(transform.localPosition);
@@ -92,8 +104,13 @@ public class DroneAgent : Agent
                 break;
         }
 
+        //float forwardAmount = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
+        //float turnAmount = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
+        //float altitudeAmount = Mathf.Clamp(actions.ContinuousActions[2], -1f, 1f);
+
         droneController.SetInputs(turnAmount, forwardAmount, altitudeAmount);
     }
+
     private void CheckRayPerception()
     {
         RayPerceptionSensorComponent3D[] m_rayPerceptionSensorComponent3Ds = GetComponents<RayPerceptionSensorComponent3D>();
@@ -167,6 +184,10 @@ public class DroneAgent : Agent
         discreteActions[0] = forwardAction;
         discreteActions[1] = turnAmount;
         discreteActions[2] = altitudeAmount;
+        //ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        //continuousActions[0] = Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0f; // Forward/backward
+        //continuousActions[1] = Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0f; // Turn left/right
+        //continuousActions[2] = Input.GetKey(KeyCode.Space) ? 1f : Input.GetKey(KeyCode.LeftControl) ? -1f : 0f; // Up/down
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -177,9 +198,11 @@ public class DroneAgent : Agent
         }
         else
         {
-            Debug.Log("Crashed!");
+            //Debug.Log("Crashed!");
+            Instantiate(explosionVFX, transform.position, Quaternion.identity);
             SetReward(-1f);
-            EndEpisode();
+            OnEpisodeEnd?.Invoke();
+            //EndEpisode();
         }
     }
 
@@ -189,6 +212,7 @@ public class DroneAgent : Agent
         SetRandomPosition();
 
         droneController.ResetSpeed();
+        targetTransform = null;
         isTargetDetected = false;
 
         if (Academy.Instance.EnvironmentParameters.GetWithDefault("Lesson", 0) <= 0)
@@ -236,10 +260,11 @@ public class DroneAgent : Agent
 
     private void OnGoalAchived()
     {
-        Debug.Log("Enemy hit");
+        //Debug.Log("Enemy hit");
         Instantiate(explosionVFX, transform.position, Quaternion.identity);
         SetReward(1f);
-        EndEpisode();
+        OnEpisodeEnd?.Invoke();
+        //EndEpisode();
     }
     private void SetRandomRotation()
     {
